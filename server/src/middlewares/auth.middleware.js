@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const blackListModel = require('../models/blackList.model');
+const redisClient = require('../config/cache');
 
 async function identifyUser(req, res, next) {
 
@@ -12,11 +13,13 @@ async function identifyUser(req, res, next) {
     });
   }
 
-  const isBlackList = await blackListModel.findOne({ token });
+  // const isBlackList = await blackListModel.findOne({ token });
+
+  const isBlackList = await redisClient.get(token);
 
   if (isBlackList) {
     return res.status(401).json({
-      message: "Unauthorized."
+      message: "Blacklisted token."
     });
   }
 

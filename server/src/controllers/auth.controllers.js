@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const blackListModel = require('../models/blackList.model');
+const redisClient = require('../config/cache');
 
 
 async function signUp(req, res) {
@@ -112,12 +113,14 @@ async function signOut(req, res) {
 
   const { token } = req.cookies;
 
-  res.clearCookie('token');
-
-  await blackListModel.create({
-    token
-  });
-
+  // await blackListModel.create({
+    //   token
+    // });
+    
+    await redisClient.set(token, Date.now(), 'EX', 60 * 60 * 24 * 3);
+    
+    res.clearCookie('token');
+    
   res.status(200).json({
     message: "User signed out successfully."
   });
