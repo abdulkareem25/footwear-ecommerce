@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http//localhost:3000/api/auth',
+  baseURL: 'http://localhost:3000/api/auth',
   withCredentials: true
 });
 
@@ -16,7 +16,8 @@ export const signUp = async (username, email, password) => {
 
 export const signIn = async (credential, password) => {
   const response = await api.post('/sign-in', {
-    credential,
+    username: credential,
+    email: credential,
     password
   });
   return response.data;

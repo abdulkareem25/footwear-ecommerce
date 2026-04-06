@@ -1,25 +1,30 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Message from '../../../components/ui/Message';
 import Spinner from '../../../components/ui/Spinner';
+import useAuth from '../hooks/useAuth';
 
 const SignIn = () => {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
+  const { handleSignIn, loading } = useAuth();
+  const navigate = useNavigate();
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    console.log("how are YOU")
-  }
+    await handleSignIn(credential, password);
+    navigate('/');
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-900">Sign in to your account</h2>
-        {/* {error && <Message variant="danger">{error}</Message>}
-        {loading && <Spinner />} */}
-        <form className="space-y-6" onSubmit={submitHandler}>
+        {/* {error && <Message variant="danger">{error}</Message>} */}
+        {loading && <Spinner />}
+        <form className="space-y-6"
+          onSubmit={submitHandler}>
           <div>
             <label htmlFor="credential" className="text-sm font-medium text-gray-700">Username or Email Address</label>
             <input
