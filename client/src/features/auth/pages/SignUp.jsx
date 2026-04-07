@@ -1,17 +1,23 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Message from '../../../components/ui/Message';
 import Spinner from '../../../components/ui/Spinner';
+import useAuth from '../hooks/useAuth';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null);
+  const { handleSignUp } = useAuth();
+  const navigate = useNavigate();
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
+    await handleSignUp(username, email, password);
+
+    navigate('/');
 
   }
 

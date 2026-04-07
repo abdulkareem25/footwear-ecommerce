@@ -32,3 +32,12 @@ export const signOut = async () => {
   const response = await api.post('/sign-out');
   return response.data;
 };
+
+export const initializeAuth = async () => {
+  try {
+    const data = await getMe();
+    return data.user;
+  } catch (error) {
+    return null;
+  }
+};
