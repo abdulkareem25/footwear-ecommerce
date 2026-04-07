@@ -124,7 +124,7 @@ async function signOut(req, res) {
   res.status(200).json({
     message: "User signed out successfully."
   });
-}
+};
 
 module.exports = {
   signUp,
